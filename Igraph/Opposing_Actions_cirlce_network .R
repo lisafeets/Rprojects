@@ -29,7 +29,7 @@ V(g2)[17]$color="black"
 ##only plot the actual data, after the dummy label data from above
 E(g2)[18:44]$color="black"
 
-##plot, saved as "Rplot MIP ordered colored verts.pdf"
+##plot, saved as "Rplot_MIP_circle.jpg"
 library(ggplot2)
 plot(g2, layout=layout.circle, vertex.size=5, vertex.label.dist=1,
          vertex.label.degree=lab.locs,
@@ -50,7 +50,7 @@ V(g2)[16]$color="orange"
 V(g2)[17]$color="black"
 ##only plot the actual data, after the dummy label data from above
 E(g2)[18:28]$color="black"
-##plot, saved as "Rplot COM ordered colored verts.pdf"
+##plot, saved as "Rplot_COM_circle.jpg"
 plot(g2, layout=layout.circle, vertex.size=5, vertex.label.dist=1,
            vertex.label.degree=lab.locs,
             vertex.label.dist=0.5, vertex.label.cex=0.8, vertex.label.font=2,

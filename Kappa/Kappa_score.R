@@ -4,13 +4,13 @@
 
 gesture=read.table("gesture",h=T)
 gesture
-                lisa lisanum               cat catnum
-1     HangUpsideDown       1    HangUpsideDown      1
-2               Grab       2              Kick     34
-3           LimpHand       3          LimpHand      3
-4      SuspendedHand       4     SuspendedHand      4
-5           LimpHand       3          LimpHand      3 etc...
-...
+#                lisa lisanum               cat catnum
+#1     HangUpsideDown       1    HangUpsideDown      1
+#2               Grab       2              Kick     34
+#3           LimpHand       3          LimpHand      3
+#4      SuspendedHand       4     SuspendedHand      4
+#5           LimpHand       3          LimpHand      3 etc...
+
 
 library(irr)
 

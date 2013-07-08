@@ -29,7 +29,7 @@ str(mcr)
 #$ Dim.2   : num  0.102 -0.597 0.295 1.371 -0.489 ...
 #$ Dim.3   : num  -0.411 -0.953 0.201 0.489 0.357 ...
 
-##plot data, saved as "Rplot MCA for top 6 females.pdf"
+##plot data, saved as "Rplot_MCA.jpg"
 library(ggplot2)
 ggplot(data=mcr, aes(x=Dim.1, y=Dim.2, label=rownames(mcr))) +
        geom_hline(yintercept=0, colour="gray70") +

@@ -2,12 +2,12 @@
 gt=read.table("gesturetokens.txt", h=T)
 attach(gt)
 gt
-        sig token types obs rep repoverobs typesoverobs  age    sex
-1     Brian    15     9  37   4 0.10810811    0.2432432 23.0   male
-2  Claudine   139    29  98  23 0.23469388    0.2959184  9.0 female
-3    Deidre   118    31  61  21 0.34426229    0.5081967  8.0 female
-4    Elikia    91    17  43  12 0.27906977    0.3953488 12.0 female
-5     Faith   201    37  79  26 0.32911392    0.4683544  7.0 female
+#        sig token types obs rep repoverobs typesoverobs  age    sex
+#1     Brian    15     9  37   4 0.10810811    0.2432432 23.0   male
+#2  Claudine   139    29  98  23 0.23469388    0.2959184  9.0 female
+#3    Deidre   118    31  61  21 0.34426229    0.5081967  8.0 female
+#4    Elikia    91    17  43  12 0.27906977    0.3953488 12.0 female
+#5     Faith   201    37  79  26 0.32911392    0.4683544  7.0 female
 
 
 rfmod=lm(gt$repoverobs~gt$age*gt$sex)
@@ -43,6 +43,7 @@ text(rfmod5_fitted, rfmod_resid, labels = rownames(gt))
 
 ##scatter plot repoverobs x age, points colored by sex, method=lm draws lines for the 2 subsets of data
 ##this ggplot2 code creates a black and white graph with differntly shpaed points and lines
+##saved as "Rplot_LM.jpg"
 library(ggplot2)
 ggplot(gt, aes(x=repoverobs, y=age, linetype=sex, shape=sex)) + geom_point(color=1, size=3) +scale_colour_hue(l=50) + geom_smooth(method=lm, se=FALSE, colour=1)+ ggtitle("Linear model for individual repertoire size as affected by age and sex")+ xlab("Individual Repertoire") +
    ylab("Age")

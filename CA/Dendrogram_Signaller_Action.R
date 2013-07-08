@@ -8,17 +8,18 @@
 
 library(pvclust)
 
-##saved as ""Rplot Dendrogram Signaller Action.pdf"
- PVClust <- pvclust(samatrix, method.hclust= "ward", method.dist= "euclidean")
-Bootstrap (r = 0.5)... Done.
-Bootstrap (r = 0.57)... Done.
-Bootstrap (r = 0.64)... Done.
-Bootstrap (r = 0.79)... Done.
-Bootstrap (r = 0.86)... Done.
-Bootstrap (r = 1.0)... Done.
-Bootstrap (r = 1.07)... Done.
-Bootstrap (r = 1.14)... Done.
-Bootstrap (r = 1.29)... Done.
-Bootstrap (r = 1.36)... Done.
-> plot(PVClust, frame= F)
+##saved as ""Rplot_Dendrogram.jpg"
+PVClust = pvclust(samatrix, method.hclust= "ward", method.dist= "euclidean")
+#Bootstrap (r = 0.5)... Done.
+#Bootstrap (r = 0.57)... Done.
+#Bootstrap (r = 0.64)... Done.
+#Bootstrap (r = 0.79)... Done.
+#Bootstrap (r = 0.86)... Done.
+#Bootstrap (r = 1.0)... Done.
+#Bootstrap (r = 1.07)... Done.
+#Bootstrap (r = 1.14)... Done.
+#Bootstrap (r = 1.29)... Done.
+#Bootstrap (r = 1.36)... Done.
+
+plot(PVClust, frame= F)
 

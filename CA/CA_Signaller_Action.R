@@ -2,7 +2,7 @@
 ##all other rows and columns set to supplimentary
 
 
-allsgca=read.table("All SGCA",h=T)
+allsgca=read.table("All SGCA.txt",h=T)
 attach(allsgca)
 
 dim(table(Signaller,Action))
@@ -23,6 +23,7 @@ colSums(samatrix)
 ##run correspondence analysis setting signaller and actions with less than 10 observations as supplimentary points
 ##by default CA plots dimensions 1 and 2 with rows and columns plotted in the same plot which is pretty busy
 ##supplimentary rows/columns are plotted with different color and in italics
+##saved as "Rplot_CA.jpg"
 library(FactoMineR)
 ca2=CA(samatrix, row.sup = c(1,11,12,13,15,16), col.sup = c(3,6,7,9,13,14,16))
 
