@@ -4,32 +4,61 @@
 
 allsgca=read.table("All SGCA.txt",h=T)
 attach(allsgca)
+str(allsgca)
+
+#'data.frame':	443 obs. of  5 variables:
+# $ Signaller: Factor w/ 17 levels "Brian","Claudine",..: 5 5 8 6 8 8 5 17 14 6 ...
+# $ Recipient: Factor w/ 16 levels "Brian","Claudine",..: 6 6 7 5 5 7 16 1 5 11 ...
+# $ Context  : Factor w/ 9 levels "Affiliation",..: 1 8 8 8 8 8 8 5 9 8 ...
+# $ Gesture  : Factor w/ 38 levels "ArmRaise","ArmSwing",..: 1 1 1 1 1 1 1 1 2 2 ...
+# $ Action   : Factor w/ 16 levels "ClimbOnMe","FollowAhead",..: 15 11 11 11 11 11 11 7 16 11 ...
+
+
 
 dim(table(Signaller,Action))
 #[1] 17 16
 
-signallernames=sort(unique(Signaller))
-actionnames=sort(unique(Action))
+snames=sort(unique(Signaller))
+anames=sort(unique(Action))
 
 samatrix=matrix(table(Signaller,Action),17,16)
-row.names(samatrix)=signallernames
-colnames(samatrix)=actionnames
+row.names(samatrix)=snames
+colnames(samatrix)=anames
 
 ##include only signallers and actions with at least 10 observations each
-rowSums(samatrix)
-colSums(samatrix)
+signallertotals=cbind(snames, apply(samatrix,1,sum))
+actiontotals=cbind(anames,apply(samatrix,2,sum))
+
+sigless10=vector()
+actless10=vector()
+y=1
+x=1
+for(i in signallertotals[,2]){
+	if(i<10){
+		sigless10=c(sigless10,y)
+		y=y+1}
+		else(y=y+1)
+}
+for(i in actiontotals[,2]){
+	if(i<10){
+		actless10=c(actless10,x)
+		x=x+1}
+		else(x=x+1)
+}
+
 
 
 ##run correspondence analysis setting signaller and actions with less than 10 observations as supplimentary points
+##also included 4 other supp points because they were outliers
 ##by default CA plots dimensions 1 and 2 with rows and columns plotted in the same plot which is pretty busy
 ##supplimentary rows/columns are plotted with different color and in italics
 ##saved as "Rplot_CA.jpg"
 library(FactoMineR)
-ca2=CA(samatrix, row.sup = c(1,11,12,13,15,16), col.sup = c(3,6,7,9,13,14,16))
+ca2=CA(samatrix, row.sup = c(sigless10,16), col.sup = c(actless10, 6,7,13))
 
 ## ca package has a nice scree plot for visualizing dimensional contirbution to total inertia
 library(ca)
-ca3=ca(samatrix, suprow = c(1,11,12,13,15,16), supcol = c(3,6,7,9,13,14,16))
+ca3=ca(samatrix, suprow = c(sigless10,16), supcol = c(actless10, 6,7,13))
 summary(ca3, scree=TRUE)
 
 #Principal inertias (eigenvalues):
