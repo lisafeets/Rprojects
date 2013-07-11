@@ -29,22 +29,20 @@ colnames(samatrix)=anames
 signallertotals=cbind(snames, apply(samatrix,1,sum))
 actiontotals=cbind(anames,apply(samatrix,2,sum))
 
-sigless10=vector()
-actless10=vector()
-y=1
-x=1
-for(i in signallertotals[,2]){
-	if(i<10){
-		sigless10=c(sigless10,y)
-		y=y+1}
-		else(y=y+1)
+getsup=function(x){
+	suplist=vector()
+	y=1
+	for(i in x[,2]){
+		if(i<10){
+			suplist=c(suplist,y)
+			y=y+1}
+			else(y=y+1)}
+	return(suplist)
+
 }
-for(i in actiontotals[,2]){
-	if(i<10){
-		actless10=c(actless10,x)
-		x=x+1}
-		else(x=x+1)
-}
+
+sigsup=getsup(signallertotals)
+actsup=getsup(actiontotals)
 
 
 
@@ -54,7 +52,7 @@ for(i in actiontotals[,2]){
 ##supplimentary rows/columns are plotted with different color and in italics
 ##saved as "Rplot_CA.jpg"
 library(FactoMineR)
-ca2=CA(samatrix, row.sup = c(sigless10,16), col.sup = c(actless10, 6,7,13))
+ca2=CA(samatrix, row.sup = c(sigsup,16), col.sup = c(actsup, 6,7,13))
 
 ## ca package has a nice scree plot for visualizing dimensional contirbution to total inertia
 library(ca)
