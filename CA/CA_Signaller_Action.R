@@ -56,7 +56,7 @@ ca2=CA(samatrix, row.sup = c(sigsup,16), col.sup = c(actsup, 6,7,13))
 
 ## ca package has a nice scree plot for visualizing dimensional contirbution to total inertia
 library(ca)
-ca3=ca(samatrix, suprow = c(sigless10,16), supcol = c(actless10, 6,7,13))
+ca3=ca(samatrix, suprow = c(sigsup,16), supcol = c(actsup, 6,7,13))
 summary(ca3, scree=TRUE)
 
 #Principal inertias (eigenvalues):
