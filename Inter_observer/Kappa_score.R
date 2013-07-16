@@ -1,15 +1,14 @@
 ##Inter-observer reliability between 2 coders of gesture data 
-##cohen's Kappa for directedness, attention and gesture type and function
+##Cohen's Kappa for directedness, attention and gesture type and function
 ##recoded categories numerically
 
 gesture=read.table("gesture",h=T)
 gesture
 #                lisa lisanum               cat catnum
 #1     HangUpsideDown       1    HangUpsideDown      1
-#2               Grab       2              Kick     34
-#3           LimpHand       3          LimpHand      3
-#4      SuspendedHand       4     SuspendedHand      4
-#5           LimpHand       3          LimpHand      3 etc...
+#2           LimpHand       3          LimpHand      3
+#3      SuspendedHand       4     SuspendedHand      4
+#4           LimpHand       3          LimpHand      3 etc...
 
 
 library(irr)
@@ -51,8 +50,6 @@ kappa2(cbind(attention[2],attention[5]))
 #  p-value = 0 
 #
 
-
-##attention.txt is readjusted for the categorical differences exceeding 1
 
 
 

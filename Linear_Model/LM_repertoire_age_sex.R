@@ -1,4 +1,6 @@
-#load and attach data
+#Does the size of a bonobo's gesture repertoire increase with age?  How sex influence repertoire size?
+
+
 gt=read.table("gesturetokens.txt", h=T)
 attach(gt)
 gt
@@ -41,12 +43,14 @@ plot(rfmod5_fitted, rfmod_resid, xlab = "Fitted values",ylab = "Residuals", type
 abline(h = 0, lty = 2)
 text(rfmod5_fitted, rfmod_resid, labels = rownames(gt))
 
-##scatter plot repoverobs x age, points colored by sex, method=lm draws lines for the 2 subsets of data
-##this ggplot2 code creates a black and white graph with differntly shpaed points and lines
-##saved as "Rplot_LM.jpg"
+
+##this ggplot2 code creates a black and white graph with differntly shaped points and lines
+##saved under images/Rplot_LM.jpg
 library(ggplot2)
 ggplot(gt, aes(x=repoverobs, y=age, linetype=sex, shape=sex)) + geom_point(color=1, size=3) +scale_colour_hue(l=50) + geom_smooth(method=lm, se=FALSE, colour=1)+ ggtitle("Linear model for individual repertoire size as affected by age and sex")+ xlab("Individual Repertoire") +
    ylab("Age")
+
+
 
 ##test model for regression assumptions
 
