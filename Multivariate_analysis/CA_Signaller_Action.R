@@ -4,16 +4,6 @@
 
 allsgca=read.table("All SGCA.txt",h=T)
 attach(allsgca)
-str(allsgca)
-
-#'data.frame':	443 obs. of  5 variables:
-# $ Signaller: Factor w/ 17 levels "Brian","Claudine",..: 5 5 8 6 8 8 5 17 14 6 ...
-# $ Recipient: Factor w/ 16 levels "Brian","Claudine",..: 6 6 7 5 5 7 16 1 5 11 ...
-# $ Context  : Factor w/ 9 levels "Affiliation",..: 1 8 8 8 8 8 8 5 9 8 ...
-# $ Gesture  : Factor w/ 38 levels "ArmRaise","ArmSwing",..: 1 1 1 1 1 1 1 1 2 2 ...
-# $ Action   : Factor w/ 16 levels "ClimbOnMe","FollowAhead",..: 15 11 11 11 11 11 11 7 16 11 ...
-
-
 
 dim(table(Signaller,Action))
 #[1] 17 16
@@ -25,9 +15,10 @@ samatrix=matrix(table(Signaller,Action),17,16)
 row.names(samatrix)=snames
 colnames(samatrix)=anames
 
-##include only signallers and actions with at least 10 observations each
+
 signallertotals=cbind(snames, apply(samatrix,1,sum))
 actiontotals=cbind(anames,apply(samatrix,2,sum))
+
 
 getsup=function(x){
 	suplist=vector()
@@ -44,86 +35,148 @@ getsup=function(x){
 sigsup=getsup(signallertotals)
 actsup=getsup(actiontotals)
 
+##set as supplimentary points those that contribute less than 10 observations as well as three other (due to being outliers):
+##Zomi, GiveAffiliation GrabOn, GroomMe, StartSex
 
-
-##run correspondence analysis setting signaller and actions with less than 10 observations as supplimentary points
-##also included 4 other supp points because they were outliers
-##by default CA plots dimensions 1 and 2 with rows and columns plotted in the same plot which is pretty busy
-##supplimentary rows/columns are plotted with different color and in italics
-##saved as "Rplot_CA.jpg"
 library(FactoMineR)
-ca2=CA(samatrix, row.sup = c(sigsup,16), col.sup = c(actsup, 6,7,13))
+ca2=CA(samatrix, row.sup = c(sigsup,16), col.sup = c(actsup,5,6,7,13))
 
-## ca package has a nice scree plot for visualizing dimensional contirbution to total inertia
 library(ca)
-ca3=ca(samatrix, suprow = c(sigsup,16), supcol = c(actsup, 6,7,13))
+ca3=ca(samatrix, suprow = c(sigsup,16), supcol = c(actsup,5,6,7,13))
 summary(ca3, scree=TRUE)
 
 #Principal inertias (eigenvalues):
 #
- #dim    value      %   cum%   scree plot               
- #1      0.281700  31.2  31.2  *************************
- #2      0.224628  24.8  56.0  ********************     
- #3      0.164367  18.2  74.2  **************           
- #4      0.114191  12.6  86.8  **********               
- #5      0.056008   6.2  93.0  ****                     
- #6      0.039918   4.4  97.4  ***                      
- #7      0.014316   1.6  99.0  *                        
- #8      0.008826   1.0 100.0                           
- #       -------- -----                                 
- #Total: 0.903953 100.0   
+# dim    value      %   cum%   scree plot               
+# 1      0.296488  37.0  37.0  *************************
+# 2      0.224607  28.0  65.0  *******************      
+# 3      0.128815  16.1  81.1  **********               
+# 4      0.069218   8.6  89.7  *****                    
+# 5      0.048093   6.0  95.7  ***                      
+# 6      0.024886   3.1  98.8  *                        
+# 7      0.009438   1.2 100.0                           
+#        -------- -----                                 
+#Total: 0.801546 100.0      
  
-
-##create an assymetric graph where only the signallers are plotted and the actions are used to describe the axes
-##this plot created in excel
-
-
 ca2$col
 
 #$coord
-#                       Dim 1      Dim 2       Dim 3      Dim 4       Dim 5
-#ClimbOnMe         0.32087179 -0.5684078 -0.13376225  0.1830649  0.02864457
-#FollowAhead       1.59258899  1.1669097 -0.32976755 -0.4863576 -0.06240599
-#GGRubStart       -0.01327535  0.3090410 -0.49300337  0.1692029  0.18328490
-#GiveAffiliation   0.32794853  0.4624179  1.53549010  0.4406463 -0.06017753
-#MoveAway          0.93733279  0.3625761  0.09196581 -0.6339474  0.30620044
-#MoveIntoPosition -0.57285006  0.6752765 -0.19587538  0.3342005  0.06330792
-#PlayStartConact  -0.42210611 -0.1118810  0.07853573 -0.3408752 -0.16033586
-#PlayStartChase   -0.13671324 -0.5854922  0.24986433  0.1211402  0.51417503
-#StraddleMe        0.86293858 -0.1173624 -0.29490760  0.5358554 -0.70015213
+#                       Dim 1       Dim 2       Dim 3        Dim 4        Dim 5
+#ClimbOnMe         0.34701965 -0.52513213  0.21448353 -0.001638756 -0.054014768
+#FollowAhead       1.60910825  1.22212838 -0.34693726 -0.003623176  0.076364724
+#GGRubStart        0.01929191  0.37116972  0.33399062 -0.086026074  0.580506545
+#MoveAway          0.96910186  0.38707732 -0.66171815  0.379813406 -0.109410245
+#MoveIntoPosition -0.57151995  0.67700748  0.35862461  0.151952297 -0.238596753
+#PlayStart        -0.39544866 -0.09657791 -0.36041213 -0.177975657  0.002532413
+#PlayStartChase   -0.19616359 -0.61069764  0.09861972  0.668926079  0.109947851
+#StraddleMe        0.89096097 -0.06796536  0.58431828 -0.572639146 -0.303130479
 
 #$contrib
-#                        Dim 1      Dim 2      Dim 3      Dim 4      Dim 5
-#ClimbOnMe         7.821796177 30.7812271  2.3295986  6.2807165  0.3135203
-#FollowAhead      24.523711023 16.5110899  1.8020429  5.6421656  0.1893952
-#GGRubStart        0.005842299  3.9705135 13.8090013  2.3413341  5.6012237
-#GiveAffiliation   1.931236447  4.8152171 72.5585580  8.6012166  0.3270623
-#MoveAway         18.203697553  3.4158036  0.3003276 20.5415887  9.7705993
-#MoveIntoPosition 16.317933216 28.4360305  3.2697417 13.7010247  1.0023904
-#PlayStartConact  19.442455107  1.7129435  1.1534877 31.2790946 14.1093413
-#PlayStartChase    0.438885097 10.0947203  2.5125152  0.8500841 31.2240474
-#StraddleMe       11.314443080  0.2624544  2.2647271 10.7627753 37.4624203
-
-##list of actions that contribute to dims 1 and 2 more than average, 100/9= 11.11
-##polarity of actions given by dimensional coordinate
-##dim1 = FollowAhead(+), MoveAway(+), MoveIntoPosition(-), PlayStartContact(-), StraddleMe(+)
-##dim2 = ClimbOnMe(-), MoveIntoPosition(+), FollowAhead(+)
+#                       Dim 1       Dim 2      Dim 3        Dim 4        Dim 5
+#ClimbOnMe         9.15532371 27.67495599  8.0499583 8.745437e-04  1.367456497
+#FollowAhead      25.05367505 19.07738178  2.6806677 5.440855e-04  0.347863947
+#GGRubStart        0.01234709  6.03313969  8.5177098 1.051627e+00 68.920955407
+#MoveAway         19.47300567  4.10084892 20.8968297 1.281215e+01  1.530146610
+#MoveIntoPosition 16.25429627 30.10762543 14.7307791 4.921611e+00 17.464548640
+#PlayStart        17.07694489  1.34452777 32.6489286 1.481626e+01  0.004317399
+#PlayStartChase    0.90425015 11.56880437  0.5260409 4.503970e+01  1.751250267
+#StraddleMe       12.07015717  0.09271606 11.9490859 2.135723e+01  8.613461235
 
 
-##get coordinates for signallers and supplimenatry signallers for plotting
-ca2$row$coord
-ca2$row.sup$coord
+ca2$row
+#$coord
+#               Dim 1       Dim 2       Dim 3       Dim 4       Dim 5
+#Claudine  0.12470389 -0.46495645 -0.03582641  0.11520907 -0.03894149
+#Deidre    0.69938424  0.17700516  0.43323398 -0.35321193 -0.13871017
+#Elikia    1.21301921  1.39797215 -0.39433266  0.39762121  0.55782574
+#Faith     0.07032303 -0.43837024  0.14488001  0.07265625  0.14370038
+#Hannah   -0.63930295  0.13353736 -0.15964506 -0.07998938 -0.23232712
+#K2       -0.70493421  0.06995784  0.63699316  1.56005126 -0.29331475
+#Kitoko   -0.58613033  0.12430144 -0.44649775 -0.51200788  0.49776383
+#Laura    -0.71715108  1.03878004  0.71378662  0.16914527  0.05463407
+#Lody     -0.80709026  0.20428972 -0.50334004 -0.36296490 -0.26333518
+#Tamia     0.80450318  0.36371931 -0.69133370  0.12886036 -0.29114626
+#Zuri     -0.44683601  0.05475512 -0.36585748  0.27483590  0.08701592
+
+#$contrib
+#              Dim 1       Dim 2      Dim 3     Dim 4      Dim 5
+#Claudine  0.8598503 15.77871405  0.1633464  3.143574  0.5169052
+#Deidre   21.6363768  1.82940095 19.1090043 23.638013  5.2467745
+#Elikia   14.2375833 24.96215928  3.4631123  6.552807 18.5618366
+#Faith     0.4238281 21.74006704  4.1404892  1.937885 10.9102156
+#Hannah   22.0333685  1.26898726  3.1624132  1.477473 17.9386699
+#K2        1.3738207  0.01786035  2.5819188 28.820267  1.4663026
+#Kitoko    6.6484330  0.39470028  8.8799320 21.730594 29.5597337
+#Laura    10.6638851 29.53422129 24.3148233  2.540980  0.3815435
+#Lody      3.6016962  0.30460715  3.2242299  3.120179  2.3637611
+#Tamia    15.2092334  4.10363490 25.8504096  1.671390 12.2799657
+#Zuri      3.3119247  0.06564744  5.1103208  5.366838  0.7742915
+
+#$cos2
+#             Dim 1       Dim 2       Dim 3      Dim 4       Dim 5
+#Claudine 0.05572917 0.774724248 0.004599696 0.04756593 0.005434352
+#Deidre   0.55909549 0.035811801 0.214535585 0.14260181 0.021992314
+#Elikia   0.35527485 0.471874104 0.037545215 0.03817405 0.075132217
+#Faith    0.02026062 0.787299071 0.085995265 0.02162736 0.084600602
+#Hannah   0.77730210 0.033914234 0.048471603 0.01216861 0.102654088
+#K2       0.11603301 0.001142766 0.094744485 0.56827970 0.020088718
+#Kitoko   0.31891647 0.014343029 0.185066205 0.24335588 0.230003920
+#Laura    0.23189155 0.486531325 0.229720853 0.01289981 0.001345831
+#Lody     0.56108624 0.035948306 0.218226943 0.11347878 0.059731467
+#Tamia    0.46391216 0.094822839 0.342575018 0.01190197 0.060757886
+#Zuri     0.36791849 0.005524650 0.246648880 0.13918813 0.013952523
+
+rowSums(ca2$row.sup$cos2[,1:3])
+#    Brian   Makanza     Murph     Ricky     Viaje      Zomi 
+#0.7552644 0.1615191 0.2228834 0.7166644 0.8212724 0.6874683
+
+rowSums(ca2$row$cos2[,1:3])
+# Claudine    Deidre    Elikia     Faith    Hannah        K2    Kitoko     Laura      Lody     Tamia      Zuri 
+#0.8350531 0.8094429 0.8646942 0.8935550 0.8596879 0.2119203 0.5183257 0.9481437 0.8152615 0.9013100 0.6200920 
+
+ca2$row.sup
+#$coord
+#              Dim 1     Dim 2       Dim 3       Dim 4      Dim 5
+#Brian   -0.94182317 0.8844096  0.33140966  0.15954909 -0.7214732
+#Makanza  0.03543004 0.7831789  0.93057356 -0.32697922  2.6470670
+#Murph    0.13533147 0.3433205 -0.06410078  0.20230475  0.1650850
+#Ricky   -1.04960949 1.4285055  0.99920942  0.57756028 -1.0879836
+#Viaje   -0.83403684 0.3403137 -0.33639010 -0.25846210 -0.3549628
+#Zomi     1.73188451 1.4014255 -0.49961361 -0.07597515  0.1525669
+
+#$cos2
+#               Dim 1     Dim 2       Dim 3        Dim 4       Dim 5
+#Brian   0.3765747083 0.3320621 0.046627565 0.0108068984 0.220979916
+#Makanza 0.0001369405 0.0669130 0.094469145 0.0116634993 0.764396051
+#Murph   0.0290965157 0.1872591 0.006527847 0.0650212825 0.043297086
+#Ricky   0.1906753986 0.3531856 0.172803371 0.0577342864 0.204872590
+#Viaje   0.6178867427 0.1028720 0.100513599 0.0593378967 0.111919060
+#Zomi    0.3955489187 0.2590015 0.032917805 0.0007612117 0.003069607
 
 
-##how well do the first two dimensions describe each of the signallers 
-##dimensions 1 + 2 for supplimentary signallers
-rowSums(ca2$row.sup$cos2[,1:2])
-#     Brian    Makanza      Murph      Ricky      Viaje       Zomi 
-#0.68202473 0.04385938 0.12286266 0.52044202 0.33147878 0.58745868 
+ca2$col.sup
+#$coord
+#                       Dim 1       Dim 2       Dim 3      Dim 4      Dim 5
+#FollowBehind     0.061346598  0.44790486  0.77166392 -0.3816583 -0.4505708
+#MoveCloser       0.198091727 -0.37879777 -0.53409623  0.2998921 -0.5839422
+#StopBehaviour   -0.196162213  0.56500264 -0.12051722  0.3166417 -0.5788608
+#TravelTogether   0.149523412  0.01443945  0.05331729  0.4569328 -0.1556711
+#GiveAffiliation  0.003922542  0.18553507  0.01001157  1.1333178 -0.6639726
+#GrabOn          -0.719863644 -0.11593302 -0.52190165 -0.4047671  1.1471507
+#GroomMe          0.389231981  0.55433992 -0.86427466  0.4554923 -0.2318642
+#StartSex        -0.590813264  0.18072725 -1.11004689  0.9891482  0.2243470
 
-##dimensions 1 + 2 for siganllers contributing to model
-rowSums(ca2$row$cos2[,1:2])
-#  Claudine     Deidre     Elikia      Faith     Hannah         K2     Kitoko 
-#0.83179561 0.57470621 0.71618832 0.81993968 0.81286578 0.05696615 0.34013579 
-#     Laura       Lody      Tamia       Zuri 
-#0.65818730 0.61325908 0.57648934 0.36324984 
+#$cos2
+#                       Dim 1        Dim 2        Dim 3      Dim 4       Dim 5
+#FollowBehind    2.757229e-03 0.1469817367 0.4362628314 0.10671888 0.148736600
+#MoveCloser      1.942231e-02 0.0710203885 0.1411910756 0.04451418 0.168774927
+#StopBehaviour   2.282301e-02 0.1893403143 0.0086147038 0.05946730 0.198742317
+#TravelTogether  1.646090e-02 0.0001535099 0.0020930100 0.15372333 0.017842318
+#GiveAffiliation 2.278626e-06 0.0050978826 0.0000148437 0.19021346 0.065288712
+#GrabOn          8.485663e-02 0.0022008962 0.0446028515 0.02682845 0.215489547
+#GroomMe         3.767757e-02 0.0764219654 0.1857673770 0.05159743 0.013370059
+#StartSex        2.235627e-02 0.0020919253 0.0789189986 0.06266450 0.003223588
+ 
+ 
+#plot 3d
+plot3d.ca(ca3, dim = c(1, 2, 3), arrows=c(TRUE,TRUE), what="active")
